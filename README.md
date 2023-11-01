@@ -2,7 +2,7 @@
 
 ## Why?
 
-Confstar is a loader with ✨magic-annotations✨ support. <br> Also, Confstar is a part of [piekit](https://github.com/uselessvevo/pie-audio) project. I just wanted to make a dedicated repository for this piece of software.
+Confstar is a settings loader (similar to django settings) with ✨magic-annotations✨. <br> Also, Confstar is a part of [piekit](https://github.com/uselessvevo/pie-audio) project. I just wanted to make a dedicated repository for this piece of software.
 
 <br>
 
