@@ -1,42 +1,40 @@
-# Confstar - Extended Constants
+# ConfStar - Extended Config Loader
 
 ## Why?
 
-Confstar is a settings loader (similar to django settings) with ✨magic-annotations✨. <br> Also, Confstar is a part of [piekit](https://github.com/uselessvevo/pie-audio) project. I just wanted to make a dedicated repository for this piece of software.
+ConfStar is a config loader (*similar to django settings loader*) with ✨magic-annotations✨. <br> Also, ConfStar is a part of [pie-audio](https://github.com/uselessvevo/pie-audio) project. I just wanted to make an independent repository for it.
 
-<br>
+## What is ✨magic-annotations✨?
+Basically, it's just a field handler that helps you to control field behaviour. 
+For example, you can specify how many elements list must have. Or you can even lock the field to prevent it from editing.
 
 ## How to use it?
 
 It's really that simple:
-* Import `ConstLoader` from `confstar`
-* Define your own loader instance
+* Import `Config` instance of `ConfLoader` (*or define your own*)
 * Import it wherever you want
 
-<br>
 
 ## Example
 ```py
-# consts.py
-from confstar import Lock, Min, Max
+# configs/consts.py
+from confstar import Lock, Min, Max, Config, ConfLoader
 
 PRIVATE_INT_FIELD: Lock = 123
 PUBLIC_MIN_FIELD: Min[3] = [1, 2]
 PUBLIC_MAX_FIELD: Max[3] = [1, 2, 3]
 
-# loader.py
-Const = ConstLoader()
-
-# setup.py
-Const.import_module("consts")
-
 # app.py
-from loader import Const
+Config.import_module("configs.config")
+
+# Or load config module by using file path
+MyConfig = ConfLoader()
+MyConfig.load_by_path("configs/myconfig.py")
 
 # Will throw an error
-Const.PRIVATE_INT_FIELD = 321
-Const.PUBLIC_MIN_FIELD = [1, 2, 3, 4]
-Const.PUBLIC_MAX_FIELD.extend([4, 5, 6])
+Config.PRIVATE_INT_FIELD = 321
+Config.PUBLIC_MIN_FIELD = [1, 2, 3, 4]
+Config.PUBLIC_MAX_FIELD.extend([4, 5, 6])
 ```
 
 ## More about magic annotations
@@ -46,6 +44,8 @@ Of course, we have built-in magic-annotations, but if you want to write your own
 1. Define your own handler
 
 ```py
+from typing import Any
+
 from confstar import AnnotatedHandler
 
 
@@ -62,7 +62,7 @@ class MagicHandler(AnnotatedHandler):
         return self.__attributes.get(field)
 ```
 
-2. Define alias which is optional
+2. Define alias (*which is optional*)
 
 ```py
 Magic = type("Magic", (MagicHandler,), {})

@@ -8,7 +8,7 @@ from confstar.types import AnnotatedHandler
 from confstar.utils import import_by_path
 
 
-class ConstLoader:
+class ConfLoader:
     """
     Configuration modules loader
     """
@@ -53,7 +53,7 @@ class ConstLoader:
     def load_module(self, config_module: ModuleType) -> None:
         """
         Process configuration module
- 
+
         Args:
             config_module (ModuleType): configuration module
         """
@@ -65,9 +65,7 @@ class ConstLoader:
         # Get all fields with `Annotated` type annotation
         module_annotated_attributes: dict = {
             k: v.__name__ for (k, v) in getattr(config_module, "__annotations__", {}).items()
-            if k.isupper() 
-            and issubclass(v, AnnotatedHandler)
-            and v.__name__ in self._handlers
+            if k.isupper() and issubclass(v, AnnotatedHandler) and v.__name__ in self._handlers
         }
 
         for field, value in module_attributes.items():
@@ -83,7 +81,7 @@ class ConstLoader:
             try:
                 return handler_instance.get(field)
             except Exception as e:
-                warnings.warn(str(e))
+                raise e
         else:
             return self.__dict__.get(field)
 
@@ -94,6 +92,9 @@ class ConstLoader:
             try:
                 handler_instance.set(field, value)
             except Exception as e:
-                warnings.warn(str(e))
+                raise e
         else:
             self.__dict__[field] = value
+
+
+Config = ConfLoader()
