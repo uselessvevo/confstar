@@ -51,9 +51,6 @@ from confstar import AnnotatedHandler
 
 class MagicHandler(AnnotatedHandler):
 
-    def __init__(self) -> None:
-        self.__attributes: dict[str, Any] = {}
-
     def set(self, field: str, value: Any) -> Any:
         # Provide your own logic
         ...
