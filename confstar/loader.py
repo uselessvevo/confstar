@@ -1,11 +1,11 @@
-import os
-import warnings
-import importlib
 from typing import Any, Type
 from types import ModuleType
 
-from confstar.types import AnnotatedHandler
+import os
+import importlib
+
 from confstar.utils import import_by_path
+from confstar.types import AnnotatedHandler
 
 
 class ConfLoader:

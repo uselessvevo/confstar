@@ -25,6 +25,7 @@ PUBLIC_MIN_FIELD: Min[3] = [1, 2]
 PUBLIC_MAX_FIELD: Max[3] = [1, 2, 3]
 
 # app.py
+Config.add_handlers(Lock, Min, Max)
 Config.import_module("configs.config")
 
 # Or load config module by using file path
@@ -44,22 +45,28 @@ Of course, we have built-in magic-annotations, but if you want to write your own
 1. Define your own handler
 
 ```py
-from typing import Any
+from __future__ import annotations
+
+from typing import Any, Type
 
 from confstar import AnnotatedHandler
 
 
 class MagicHandler(AnnotatedHandler):
 
-    def __init__(self) -> None:
-        self.__attributes: dict[str, Any] = {}
-
     def set(self, field: str, value: Any) -> Any:
         # Provide your own logic
         ...
 
     def get(self, field: str) -> Any:
-        return self.__attributes.get(field)
+        return self._attributes.get(field)
+
+    def __class_getitem__(cls, value: Any) -> Type[MagicHandler]:
+        """
+        Provide the type annotation logic
+        
+        Field: HandlerType[<values>]
+        """
 ```
 
 2. Define alias (*which is optional*)

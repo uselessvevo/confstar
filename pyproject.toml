@@ -1,0 +1,40 @@
+[project]
+name = "confstar"
+version = "1.0.0"
+description = "Extended Config Loader"
+authors = [
+    {name = "Ivanov Cyril", email = "jcommander13@yandex.ru"}
+]
+license = { text = "GPLv2+" }
+readme = "README.md"
+keywords = [
+    "configuration", "config", "settings", "handlers"
+]
+classifiers = [
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
+    "Natural Language :: English",
+]
+dynamic = ["dependencies"]
+
+[project.urls]
+Homepage = "https://github.com/uselessvevo/confstar"
+
+[project.optional-dependencies]
+dev = [
+    "colorama==0.4.6",
+    "iniconfig==2.0.0",
+    "packaging==23.2",
+    "pluggy==1.3.0",
+    "pytest==7.4.3"
+]
+
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
