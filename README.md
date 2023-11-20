@@ -1,34 +1,41 @@
-# ConfStar - Extended Config Loader
+# Confstar
 
-## Why?
+## What is this library?
 
-ConfStar is a config loader (*similar to django settings loader*) with ✨magic-annotations✨. <br> Also, ConfStar is a part of [pie-audio](https://github.com/uselessvevo/pie-audio) project. I just wanted to make an independent repository for it.
+Confstar is a config loader (*similar to django settings loader*) with ✨**magic-annotations**✨ handlers. <br> Also, Confstar is a part of [pie-audio](https://github.com/uselessvevo/pie-audio) project. I just wanted to make an independent repository for it.
 
-## What is ✨magic-annotations✨?
-Basically, it's just a field handler that helps you to control field behaviour. 
-For example, you can specify how many elements list must have. Or you can even lock the field to prevent it from editing.
+## What is ✨magic-annotation✨?
+Basically, it's micro-handlers that let's you to control field behaviour  via [type annotations](https://peps.python.org/pep-0484/).
 
-## How to use it?
+For example, you can specify how many elements list must have, lock the field to prevent it from editing and etc.
+
+## How to use confstar?
 
 It's really that simple:
 * Import `Config` instance of `ConfLoader` (*or define your own*)
 * Import it wherever you want
 
 
-## Example
+## Configuration Module
 ```py
 # configs/consts.py
-from confstar import Lock, Min, Max, Config, ConfLoader
+from confstar.types import *
 
-PRIVATE_INT_FIELD: Lock = 123
+PRIVATE_INT_FIELD: Lock = 100
 PUBLIC_MIN_FIELD: Min[3] = [1, 2]
 PUBLIC_MAX_FIELD: Max[3] = [1, 2, 3]
+PUBLIC_RANGE_FIELD: Range[1, 5] = 2
+```
 
-# app.py
+## Your Application
+```py
+from confstar.loader import Config, ConfLoader
+
+
 Config.add_handlers(Lock, Min, Max)
 Config.import_module("configs.config")
 
-# Or load config module by using file path
+# Or load configuration module by using relative file path
 MyConfig = ConfLoader()
 MyConfig.load_by_path("configs/myconfig.py")
 
@@ -36,9 +43,10 @@ MyConfig.load_by_path("configs/myconfig.py")
 Config.PRIVATE_INT_FIELD = 321
 Config.PUBLIC_MIN_FIELD = [1, 2, 3, 4]
 Config.PUBLIC_MAX_FIELD.extend([4, 5, 6])
+Config.PUBLIC_RANGE_FIELD = 6
 ```
 
-## More about magic annotations
+## Writing Your Own Handler
 
 Of course, we have built-in magic-annotations, but if you want to write your own, it's really that easy:
 
@@ -55,11 +63,19 @@ from confstar import AnnotatedHandler
 class MagicHandler(AnnotatedHandler):
 
     def set(self, field: str, value: Any) -> Any:
-        # Provide your own logic
-        ...
+        """
+        Set or throw and error if validation fail
+        """
+        if not value % 2 == 0:
+            raise ValueError(f"An error has been occurred in {self.__class__.__name__}")
+
+        self._attributes[field] = value
 
     def get(self, field: str) -> Any:
-        return self._attributes.get(field)
+        """
+        Return field from `_attributes`
+        """
+        return self._attributes[field]  # or via `dict.get` method
 
     def __class_getitem__(cls, value: Any) -> Type[MagicHandler]:
         """
@@ -69,7 +85,7 @@ class MagicHandler(AnnotatedHandler):
         """
 ```
 
-2. Define alias (*which is optional*)
+2. Define alias to ignore linter (*which is optional*)
 
 ```py
 Magic = type("Magic", (MagicHandler,), {})
@@ -79,7 +95,7 @@ Magic = type("Magic", (MagicHandler,), {})
 3. Apply your handler on some field
 
 ```py
-from confstar import Magic
+from my_handlers import Magic
 
 
 MAGIC_FIELD: Magic = ...

@@ -42,7 +42,7 @@ class MaxHandler(AnnotatedHandler):
         self._attributes[field] = value
 
     def get(self, field: str) -> Any:
-        return self._attributes[field]
+        return self._attributes.get(field)
 
     def __class_getitem__(cls, max_value: Numeric) -> Type[MaxHandler]:
         if not isinstance(max_value, NUMERIC_TYPES):
@@ -61,7 +61,7 @@ class MinHandler(AnnotatedHandler):
         self._attributes[field] = value
 
     def get(self, field: str) -> Any:
-        return self._attributes[field]
+        return self._attributes.get(field)
 
     def __class_getitem__(cls, min_value: Numeric) -> Type[MinHandler]:
         if not isinstance(min_value, NUMERIC_TYPES):
@@ -83,7 +83,7 @@ class RangeHandler(AnnotatedHandler):
         self._attributes[field] = value
 
     def get(self, field: str) -> Any:
-        return self._attributes[field]
+        return self._attributes.get(field)
 
     def __class_getitem__(cls, num_range: list[Numeric, Numeric]) -> Type[RangeHandler]:
         if len(num_range) != 2:
