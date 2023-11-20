@@ -16,7 +16,7 @@ It's really that simple:
 * Import it wherever you want
 
 
-## Configuration Module
+## Configuration module
 ```py
 # configs/consts.py
 from confstar.types import *
@@ -27,7 +27,7 @@ PUBLIC_MAX_FIELD: Max[3] = [1, 2, 3]
 PUBLIC_RANGE_FIELD: Range[1, 5] = 2
 ```
 
-## Your Application
+## Your application
 ```py
 from confstar.loader import Config, ConfLoader
 
@@ -46,7 +46,7 @@ Config.PUBLIC_MAX_FIELD.extend([4, 5, 6])
 Config.PUBLIC_RANGE_FIELD = 6
 ```
 
-## Writing Your Own Handler
+## Writing your own handler
 
 Of course, we have built-in magic-annotations, but if you want to write your own, it's really that easy:
 
