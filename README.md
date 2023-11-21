@@ -21,6 +21,7 @@ It's really that simple:
 # configs/consts.py
 from confstar.types import *
 
+PUBLIC_STRING_VALUE = "String Value"
 PRIVATE_INT_FIELD: Lock = 100
 PUBLIC_MIN_FIELD: Min[3] = [1, 2]
 PUBLIC_MAX_FIELD: Max[3] = [1, 2, 3]
@@ -38,6 +39,10 @@ Config.import_module("configs.config")
 # Or load configuration module by using relative file path
 MyConfig = ConfLoader()
 MyConfig.load_by_path("configs/myconfig.py")
+
+# You can freely overwrite this field
+# because it has no handlers attached to it
+Config.PUBLIC_STRING_VALUE = "New string value!"
 
 # Will throw an error
 Config.PRIVATE_INT_FIELD = 321

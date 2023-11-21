@@ -5,7 +5,7 @@ import os
 import importlib
 
 from confstar.utils import import_by_path
-from confstar.types import AnnotatedHandler
+from confstar.types import AnnotationHandler
 
 
 class ConfLoader:
@@ -20,7 +20,7 @@ class ConfLoader:
         # Dictionary of fields to handlers relation (<field name>: <handler name>)
         self.__dict__["_fields_handlers"]: dict[str, str] = {}
 
-    def add_handlers(self, *handlers: Type[AnnotatedHandler]) -> None:
+    def add_handlers(self, *handlers: Type[AnnotationHandler]) -> None:
         for handler in handlers:
             if handler in self._handlers:
                 raise AttributeError(f"Handler {handler} is already added")
@@ -65,7 +65,9 @@ class ConfLoader:
         # Get all fields with `Annotated` type annotation
         module_annotated_attributes: dict = {
             k: v.__name__ for (k, v) in getattr(config_module, "__annotations__", {}).items()
-            if k.isupper() and issubclass(v, AnnotatedHandler) and v.__name__ in self._handlers
+            if k.isupper()
+            and v.__name__ in self._handlers
+            and issubclass(v, AnnotationHandler)
         }
 
         for field, value in module_attributes.items():

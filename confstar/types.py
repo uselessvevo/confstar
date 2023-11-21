@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import sys
-import inspect
 from typing import Any, Type, Union
 
 
@@ -9,7 +7,10 @@ Numeric = Union[int, float, complex]
 NUMERIC_TYPES = (int, float, complex)
 
 
-class AnnotatedHandler:
+__all__ = ("Max", "Min", "Range", "Lock")
+
+
+class AnnotationHandler:
 
     def __init__(self) -> None:
         self._attributes: dict[str, Any] = {}
@@ -21,7 +22,7 @@ class AnnotatedHandler:
         raise NotImplementedError("Method \"get\" must be implemented")
 
 
-class LockHandler(AnnotatedHandler):
+class LockHandler(AnnotationHandler):
 
     def set(self, field: str, value: Any) -> Any:
         if field in self._attributes:
@@ -33,7 +34,7 @@ class LockHandler(AnnotatedHandler):
         return self._attributes.get(field)
 
 
-class MaxHandler(AnnotatedHandler):
+class MaxHandler(AnnotationHandler):
 
     def set(self, field: str, value: Any) -> Any:
         if len(value) > self.__max:
@@ -52,7 +53,7 @@ class MaxHandler(AnnotatedHandler):
         return cls
 
 
-class MinHandler(AnnotatedHandler):
+class MinHandler(AnnotationHandler):
 
     def set(self, field: str, value: Any) -> Any:
         if len(value) < self.__min:
@@ -71,7 +72,7 @@ class MinHandler(AnnotatedHandler):
         return cls
 
 
-class RangeHandler(AnnotatedHandler):
+class RangeHandler(AnnotationHandler):
     """
     Check if value in range of A and B numerics
     """
@@ -100,5 +101,3 @@ Max = type("Max", (MaxHandler,), {})
 Min = type("Min", (MinHandler,), {})
 Lock = type("Lock", (LockHandler,), {})
 Range = type("Range", (RangeHandler,), {})
-
-__all__ = list(i[0] for i in inspect.getmembers(sys.modules[__name__], inspect.isclass) if not i[0].endswith("Handler"))

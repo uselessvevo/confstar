@@ -1,5 +1,6 @@
 from confstar.types import Lock, Min, Max, Range
 
+PUBLIC_STRING_VALUE = "String Value"
 PRIVATE_INT_FIELD: Lock = 123
 PUBLIC_MIN_FIELD: Min[2] = [1, 2, 3]
 PUBLIC_MAX_FIELD: Max[5] = [1, 2, 3]
