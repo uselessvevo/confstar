@@ -1,10 +1,15 @@
 # Confstar
+[![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/release/python-360/)
+[![Python 3.8](https://img.shields.io/badge/python-3.8-blue.svg)](https://www.python.org/downloads/release/python-360/)
+[![Python 3.9](https://img.shields.io/badge/python-3.9-blue.svg)](https://www.python.org/downloads/release/python-360/)
+[![Python 3.10](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/downloads/release/python-360/)
+
 
 ## What is this library?
 
 Confstar is a config loader (*similar to django settings loader*) with ✨**magic-annotations**✨ handlers. <br> Also, Confstar is a part of [pie-audio](https://github.com/uselessvevo/pie-audio) project. I just wanted to make an independent repository for it.
 
-## What is ✨magic-annotation✨?
+## What are ✨magic-annotations✨?
 Basically, it's micro-handlers that let's you to control field behaviour  via [type annotations](https://peps.python.org/pep-0484/).
 
 For example, you can specify how many elements list must have, lock the field to prevent it from editing and etc.
